@@ -1,0 +1,5 @@
+raw_reply_code,reply_code,reply_code_id
++,NoError,0
+I,FormErr,1
+C,NotImp,4
+-,NotAuth,9

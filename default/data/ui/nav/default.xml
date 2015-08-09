@@ -1,0 +1,7 @@
+<nav search_view="search" color="#00AACC">
+  <view name="authoritive_dns" default="true"/>
+  <view name="caching_dns" />
+  <view name="search" />
+  <view name="data_models" />
+  <view name="dashboards" />
+</nav>

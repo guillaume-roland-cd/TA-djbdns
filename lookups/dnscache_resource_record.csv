@@ -1,0 +1,17 @@
+resource_record_id,resource_record
+1,A
+2,NS
+5,CNAME
+6,SOA
+12,PTR
+15,MX
+16,TXT
+28,AAAA
+33,SRV
+38,A6
+47,NSEC
+48,DNSKEY
+99,SPF
+251,IXFR
+252,AXFR
+255,wildcard 
