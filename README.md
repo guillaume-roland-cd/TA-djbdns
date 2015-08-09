@@ -1,10 +1,12 @@
 # Splunk TA for djbdns
 
-This Splunk TA provides insight into the following DNS daemons by djb:
+This Splunk TA provides insight into the following DNS components by djb:
 
 * tinydns
 * axfrdns
 * dnscache
+
+It covers the original 1.05 version, or any newer patched version that uses the djb daemontools.
 
 ## Installation
 
@@ -25,7 +27,7 @@ This Splunk TA provides insight into the following DNS daemons by djb:
 
 ## Configuration
 
-None
+None necessary, but feel free to poke around.
 
 ## Splunk data models and CIM compliance
 
