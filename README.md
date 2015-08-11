@@ -1,12 +1,16 @@
 # Splunk TA for djbdns
 
-This Splunk TA provides insight into the following DNS components by djb:
+This Splunk TA provides search knowledge into the log files from following DNS
+components by djb:
 
 * tinydns
 * axfrdns
 * dnscache
 
-It covers the original 1.05 version, or any newer patched version that uses the djb daemontools.
+The search knowledge is captured in a single datamodel, from which various
+panels are built through the Splunk pivot tool. It covers the log files from
+the original djbdns v1.05, or any newer patched version that uses the djb
+daemontools for logging.
 
 ## Installation
 
@@ -38,7 +42,7 @@ It provides 1 data model with 2 childs:
     * auth (for tinydns/axfrdns log entries)
     * cache (for dnscache log entries)
 
-The data model provides the following Splunk CIM compliant fields:
+The data model provides fields compatible with the Splunk Common Information Model (CIM):
 
 * src_ip
 * src_port
@@ -55,6 +59,10 @@ And the following non CIM-compliant field:
 ## Authoritive Dashboard
 
 ![Splunk TA djbdns dashboard](splunk_ta_djbdns_auth.png)
+
+Shows the top src_ips that don't evenly distribute their queries to each available nameserver:
+
+![Splunk TA djbdns most uneven query src_ip](splunk_ta_djbdns_auth_uneven_stddev.png)
 
 ## Caching Dashboard
 

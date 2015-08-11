@@ -14,7 +14,7 @@
       <chart>
         <title>Query count by nameserver</title>
         <search>
-          <query>|datamodel dns auth search |timechart count by host</query>
+          <query>| pivot dns auth count(auth) AS "queries" SPLITROW _time AS _time PERIOD auto SPLITCOL host SORT 100 _time ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 10 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -45,7 +45,7 @@
       <chart>
         <title>Top 10 reply codes</title>
         <search>
-          <query>|datamodel dns auth search |top 10  auth.reply_code</query>
+          <query>| pivot dns auth count(auth) AS "queries" SPLITROW reply_code AS reply_code TOP 10 count(auth) ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -75,15 +75,17 @@
   </row>
   <row>
     <panel>
-      <table>
-        <title>Top 10 query clients by src_ip</title>
+      <chart>
+        <title>Top 10 queries by RR</title>
         <search>
-          <query>|datamodel dns auth search |stats sparkline(count) as requests,count by auth.src_ip|sort - count | head 10</query>
+          <query>| pivot dns auth count(auth) AS "requests" SPLITROW resource_record AS resource_record TOP 10 count(auth) ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
-        <option name="charting.chart">bar</option>
-        <option name="charting.axisY2.enabled">false</option>
+        <option name="wrap">undefined</option>
+        <option name="rowNumbers">undefined</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
         <option name="charting.axisTitleX.visibility">visible</option>
@@ -91,7 +93,9 @@
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
         <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
         <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
@@ -103,18 +107,13 @@
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
         <option name="charting.legend.placement">right</option>
-        <option name="wrap">true</option>
-        <option name="rowNumbers">false</option>
-        <option name="dataOverlayMode">none</option>
-        <option name="drilldown">none</option>
-        <option name="count">10</option>
-      </table>
+      </chart>
     </panel>
     <panel>
       <chart>
         <title>Top 10 queries</title>
         <search>
-          <query>|datamodel dns auth search |top 10 auth.query</query>
+          <query>| pivot dns auth count(auth) AS "queries" SPLITROW query AS query TOP 10 count(auth) ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -145,30 +144,82 @@
   <row>
     <panel>
       <table>
-        <title>Top 10 queries by RR</title>
+        <title>Top 10 query clients by src_ip</title>
         <search>
-          <query>|datamodel dns auth search |top showperc=false 10 auth.resource_record</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-        </search>
-        <option name="wrap">undefined</option>
-        <option name="rowNumbers">undefined</option>
-        <option name="drilldown">row</option>
-        <option name="dataOverlayMode">none</option>
-        <option name="count">10</option>
-      </table>
-    </panel>
-    <panel>
-      <chart>
-        <title>Rare resource record queries</title>
-        <search>
-          <query>|datamodel dns auth search |rare 10 auth.resource_record</query>
+          <query>|datamodel dns auth search |stats sparkline(count) as requests,count by auth.src_ip|sort - count |rename auth.src_ip AS src_ip| head 10</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
         <option name="charting.chart">bar</option>
-        <option name="charting.axisY2.enabled">undefined</option>
-      </chart>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">row</option>
+        <option name="count">10</option>
+        <drilldown target="dns_query_details">
+          <link>
+            <![CDATA[
+              /app/splunk_ta_djbdns/dns_query_details?form.src_ip=$row.src_ip$
+            ]]>
+          </link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Top uneven query distribution by src_ip</title>
+        <search>
+          <query>|datamodel dns auth search |rename auth.src_ip AS src_ip | eventstats count as totalcount by src_ip |stats values(totalcount) as totalcount, count by src_ip,host |eval perc=round((count/totalcount)*100) |where totalcount&gt;100 |xyseries src_ip,host,perc|fillnull |untable src_ip,host,perc |eventstats stdev(perc) as stdev by src_ip |eval stdev=round(stdev) |eval src_ip=if(len(stdev)==1,"0".stdev,stdev)." ".src_ip|xyseries src_ip,host,perc |sort - src_ip |eval src_ip=split(src_ip," ") |eval src_ip=mvindex(src_ip,1)</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="drilldown">cell</option>
+      </table>
     </panel>
   </row>
   <row>
@@ -176,7 +227,7 @@
       <table>
         <title>Top 10 NotAuth queries</title>
         <search>
-          <query>|datamodel dns auth search |search auth.reply_code="NotAuth" |top showperc=false 10 auth.query</query>
+          <query>| pivot dns auth count(auth) AS "queries" SPLITROW query AS query FILTER reply_code is NotAuth TOP 10 count(auth) ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -193,7 +244,7 @@
       <table>
         <title>Top 10 not NotImp queries</title>
         <search>
-          <query>|datamodel dns auth search |search auth.reply_code="NotImp" |stats values(auth.query) as query by auth.src_ip</query>
+          <query>| pivot dns auth count(auth) AS "queries" SPLITROW query AS query FILTER reply_code is NotImp TOP 10 count(auth) ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -208,7 +259,7 @@
       <table>
         <title>Top 10 FormErr queries</title>
         <search>
-          <query>|datamodel dns auth search |search auth.reply_code="FormErr" |top showperc=false 10 auth.query</query>
+          <query>| pivot dns auth count(auth) AS "queries" SPLITROW query AS query FILTER reply_code is FormErr TOP 10 count(auth) ROWSUMMARY 0 COLSUMMARY 0 NUMCOLS 0 SHOWOTHER 1</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
