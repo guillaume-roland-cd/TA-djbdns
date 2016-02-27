@@ -1,5 +1,7 @@
 raw_reply_code,reply_code,reply_code_id
-+,NoError,0
++,No error,0
 I,FormErr,1
+XX,ServFail,2
+XX,NXDomain,3
 C,NotImp,4
 -,NotAuth,9
