@@ -1,6 +1,6 @@
-# Splunk TA for djbdns
+# TA-djbdns for Splunk 
 
-This CIM compliant Splunk TA can be used with Splunk Enterprise Security and
+This CIM compliant TA can be used with Splunk Enterprise Security and
 provides field extractions, aliases, eventtypes and tags for the following DNS
 components by djb:
 
@@ -18,7 +18,7 @@ Splunk Enterprise Security will look like this:
 
 ## Installation
 
-Install this Splunk TA on your Splunk (Enterprise Security) search head. Make
+Install this TA on your Splunk (Enterprise Security) search head. Make
 sure to rename it Splunk_TA_djbdns or TA-djbdns otherwise ES won't eat it.
 
 ## Configuration 
