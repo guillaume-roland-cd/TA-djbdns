@@ -11,15 +11,9 @@ components by djb:
 It covers the log files from the original djbdns v1.05, or any newer patched
 version that uses the djb daemontools for logging.
 
-After installation, the DNS Activity panel under Protocol Intelligence in
-Splunk Enterprise Security will look like this:
-
-![Splunk ES DNS Activity](splunk_es_dns_activity_djbdns.png)
-
 ## Installation
 
-Install this TA on your Splunk (Enterprise Security) search head. Make
-sure to rename it Splunk_TA_djbdns or TA-djbdns otherwise ES won't eat it.
+Install this TA on your Splunk (Enterprise Security) search head. 
 
 ## Configuration 
 
@@ -28,19 +22,19 @@ Have the log files indexed by a Splunk Universal Forwarder with sourcetypes
 
 ```
 [monitor:///etc/tinydns/log/main/current]
-disabled = false
-sourcetype = tinydns
 index=dns
+sourcetype = tinydns
+disabled = 0
 
 [monitor:///etc/dnscache/log/main/current]
-disabled = false
-sourcetype = dnscache
 index=dns
+sourcetype = dnscache
+disabled = 0
 
 [monitor:///etc/axfrdns/log/main/current]
-disabled = false
-sourcetype = axfrdns
 index=dns
+sourcetype = axfrdns
+disabled = 0
 ```
 
 ## CIM 
@@ -61,3 +55,8 @@ And the following non CIM-compliant field:
 
 * resource_record
 
+## Support
+
+This is an MIT licensed open source project without warranty of any kind. No
+support is provided. A public repository and issue tracker are available at
+[https://github.com/jorritfolmer/TA-djbdns](https://github.com/jorritfolmer/TA-djbdns)
