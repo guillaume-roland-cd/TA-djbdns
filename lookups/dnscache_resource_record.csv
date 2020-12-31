@@ -11,6 +11,7 @@ resource_record_id,resource_record
 38,A6
 47,NSEC
 48,DNSKEY
+65,HTTPS
 99,SPF
 251,IXFR
 252,AXFR
